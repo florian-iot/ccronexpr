@@ -108,19 +108,27 @@ time_t cron_mktime_gm(struct tm* tm) {
     /* http://www.catb.org/esr/time-programming/ */
     /* portable version of timegm() */
     time_t ret;
-    char *tz;
-    tz = getenv("TZ");
-    if (tz)
-        tz = strdup(tz);
-    setenv("TZ", "UTC+0", 1);
-    tzset();
+    //--- 22-Apr-2021:
+    //--- disable this block due to memory leak
+    //--- somsakc@hotmail.com
+    //char *tz;
+    //tz = getenv("TZ");
+    //if (tz)
+    //    tz = strdup(tz);
+    //setenv("TZ", "UTC+0", 1);
+    //tzset();
+    //--
     ret = mktime(tm);
-    if (tz) {
-        setenv("TZ", tz, 1);
-        free(tz);
-    } else
-        unsetenv("TZ");
-    tzset();
+    //--- 22-Apr-2021:
+    //--- disable this block due to memory leak
+    //--- somsakc@hotmail.com
+    //if (tz) {
+    //    setenv("TZ", tz, 1);
+    //    free(tz);
+    //} else
+    //    unsetenv("TZ");
+    //tzset();
+    //--
     return ret;
 #elif defined(ANDROID)
     /* https://github.com/adobe/chromium/blob/cfe5bf0b51b1f6b9fe239c2a3c2f2364da9967d7/base/os_compat_android.cc#L20 */
